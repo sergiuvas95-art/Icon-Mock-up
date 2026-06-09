@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Icon Barbershop — V6 Full SPA</title>
 <meta name="description" content="Icon Barbershop - doua locatii premium in Targu Mures.">
+
+<!-- ═══ Icon backend integration. Fill ICON_CONFIG after deploying Supabase; keep icon-api.js next to this file. ═══ -->
+<script>
+  window.ICON_CONFIG = {
+    supabaseUrl: "https://qtojohmllgmldxhvdeuo.supabase.co",
+    anonKey:     "sb_publishable_j8Zrc4R7N9z589tRp7rCVg_uAhC3ecA",   // publishable key — safe in the browser
+    tenant:      "icon",
+    botUsername: "iconbarbershop",
+    hydratePublic: true     // load real barbers/services/settings from the backend
+  };
+</script>
+<script src="icon-api.js"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -100,8 +113,8 @@ nav{
 }
 .nav-logo{font-family:var(--sans);font-size:16px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px}
 .nav-logo-icon{height:100px;width:auto;object-fit:contain;flex-shrink:0;margin:-24px 0}
-.nav-logo-sign{height:34px;width:auto;display:block;flex-shrink:0}
-.nav-logo-wordmark{height:28px;width:auto;display:none;flex-shrink:0;color:var(--light-text)}
+.nav-logo-sign{height:48px;width:auto;display:block;flex-shrink:0}
+.nav-logo-wordmark{height:48px;width:auto;display:none;flex-shrink:0;color:var(--light-text)}
 .nav-links{display:flex;gap:24px;align-items:center}
 .nav-links a{
   font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
@@ -253,8 +266,8 @@ nav{
   display:flex;align-items:center;gap:16px;padding:0 40px;
   max-width:var(--container);margin:0 auto;
 }
-.divider-num{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--gold);opacity:0.4}
-.divider-text{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+.divider-num{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:0.15em;color:var(--gold);opacity:1}
+.divider-text{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#f5f4f0}
 .divider-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(245,166,35,0.12),transparent 80%)}
 
 .btn-gold{
@@ -282,11 +295,6 @@ nav{
   transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(245,166,35,0.02) 0%,transparent 55%);
   pointer-events:none;
-}
-.page-hero::after{
-  content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);
-  background-size:80px 80px;pointer-events:none;
 }
 .page-hero>*{position:relative;z-index:1}
 .page-hero-title{
@@ -321,11 +329,6 @@ nav{
   background:radial-gradient(circle,rgba(245,166,35,0.025) 0%,transparent 55%);
   pointer-events:none;
 }
-.hero::after{
-  content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);
-  background-size:80px 80px;pointer-events:none;
-}
 .hero>*{position:relative;z-index:1}
 .hero-title{font-family:var(--sans);font-weight:800;line-height:0.85;letter-spacing:-0.06em;margin-bottom:4px}
 .hero-title-big{font-size:clamp(5rem,14vw,12rem);color:#f5f4f0;display:block}
@@ -334,6 +337,23 @@ nav{
   font-family:var(--serif);font-style:italic;font-weight:400;
   font-size:clamp(1rem,2vw,1.5rem);color:var(--gold);opacity:0.6;
   margin:16px 0 32px;display:block;
+}
+.hero-accent-static{display:inline}
+.subtitle-rotator{
+  display:inline-block;position:relative;
+  height:1.25em;overflow:hidden;vertical-align:text-bottom;
+}
+.subtitle-word{
+  position:absolute;left:0;top:0;text-align:left;white-space:nowrap;
+  line-height:1.25em;
+  opacity:0;transform:translateY(110%);
+  transition:opacity 0.55s var(--ease-expo),transform 0.55s var(--ease-expo);
+  will-change:transform,opacity;
+}
+.subtitle-word.active{opacity:1;transform:translateY(0)}
+.subtitle-word.above{opacity:0;transform:translateY(-110%)}
+@media (prefers-reduced-motion: reduce){
+  .subtitle-word{transition:none}
 }
 .hero-meta{display:flex;align-items:center;gap:16px;margin-bottom:28px}
 .meta-chip{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.48)}
@@ -353,7 +373,7 @@ nav{
 
 /* Stats pill */
 .stats-float{
-  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;
+  position:absolute;bottom:32px;left:0;right:0;margin-inline:auto;width:fit-content;z-index:10;
   display:flex;justify-content:center;background:rgba(255,255,255,0.03);
   border:1px solid rgba(255,255,255,0.06);border-radius:var(--r-pill);
   overflow:hidden;backdrop-filter:blur(16px);
@@ -362,6 +382,20 @@ nav{
 .stats-cell:hover{background:rgba(245,166,35,0.03)}
 .stats-val{font-family:var(--sans);font-size:1.1rem;font-weight:700;color:#f5f4f0;display:block;margin-bottom:2px}
 .stats-label{font-family:var(--mono);font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45)}
+
+/* ════════════════════════════════════════
+   HERO BACKGROUND FX (theme-aware sparkles)
+   Same drifting/twinkling particle field in both themes; only the particle
+   colour + opacity adapt per theme (set on the canvas at draw time):
+   - Dark theme  : white sparkles
+   - Light theme : muted warm-bronze sparkles, lower opacity (distinct from
+                   the bright gold buttons, used as a soft texture)
+   ════════════════════════════════════════ */
+.hero-fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero .hero-fx{z-index:0} /* override .hero>*{z-index:1} so content stays on top */
+.hero-fx-sparkles{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1s ease}
+[data-theme="dark"] .hero-fx-sparkles,
+[data-theme="light"] .hero-fx-sparkles{opacity:1}
 
 /* ════════════════════════════════════════
    BARBERS
@@ -746,7 +780,6 @@ footer{
 /* --- Hero (Acasa) --- */
 [data-theme="light"] .hero{background:var(--light-bg)}
 [data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(184,134,11,0.035) 0%,transparent 55%)}
-[data-theme="light"] .hero::after{background-image:linear-gradient(rgba(0,0,0,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.018) 1px,transparent 1px)}
 [data-theme="light"] .hero-title-big{color:var(--light-text)}
 [data-theme="light"] .hero-title-thin{color:rgba(28,26,20,0.6)}
 [data-theme="light"] .hero-desc{color:var(--light-text-soft)}
@@ -773,7 +806,7 @@ footer{
 
 /* --- Dividers --- */
 [data-theme="light"] .divider-num{color:#b8860b}
-[data-theme="light"] .divider-text{color:rgba(18,20,20,0.3)}
+[data-theme="light"] .divider-text{color:rgba(18,20,20,0.72)}
 [data-theme="light"] .divider-line{background:linear-gradient(90deg,rgba(184,134,11,0.2),transparent 80%)}
 [data-theme="light"] .page-rule{border-color:rgba(0,0,0,0.06)}
 
@@ -1722,7 +1755,7 @@ footer{
      NAV
      ════════════════════════════════════════ -->
 <nav>
-  <div class="nav-logo" onclick="navTo('acasa')"><img class="nav-logo-icon" id="navLogoImg" src="" alt="Icon Barbershop"><svg class="nav-logo-sign" viewBox="0 0 735 280" role="img" aria-label="ICON"><defs><linearGradient id="navsign-box" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c1c20"/><stop offset="100%" stop-color="#0d0d0f"/></linearGradient><filter id="navsign-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect x="10" y="40" width="715" height="200" rx="6" fill="url(#navsign-box)" stroke="#2a2a30" stroke-width="2"/><g fill="none" stroke="#f2efe6" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" filter="url(#navsign-glow)"><path d="M110 78 L80 78 L80 202 L110 202"/><path d="M150 90 L150 190"/><path d="M295.9 111.3 A50 50 0 1 0 295.9 168.7"/><circle cx="410" cy="140" r="50"/><path d="M510 190 L510 90 L600 190 L600 90"/><path d="M640 78 L670 78 L670 202 L640 202"/></g></svg><svg class="nav-logo-wordmark" viewBox="0 0 740 200" role="img" aria-label="ICON"><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2"><path d="M110 38 L80 38 L80 162 L110 162"/><path d="M150 50 L150 150"/><path d="M295.9 71.3 A50 50 0 1 0 295.9 128.7"/><circle cx="410" cy="100" r="50"/><path d="M510 150 L510 50 L600 150 L600 50"/><path d="M640 38 L670 38 L670 162 L640 162"/></g></svg></div>
+  <div class="nav-logo" onclick="navTo('acasa')"><img class="nav-logo-icon" id="navLogoImg" src="" alt="Icon Barbershop"><svg class="nav-logo-sign" viewBox="0 0 735 280" role="img" aria-label="ICON"><defs><linearGradient id="navsign-box" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c1c20"/><stop offset="100%" stop-color="#0d0d0f"/></linearGradient><filter id="navsign-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect x="10" y="40" width="715" height="200" rx="6" fill="url(#navsign-box)" stroke="#2a2a30" stroke-width="2"/><g fill="none" stroke="#f2efe6" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" filter="url(#navsign-glow)"><path d="M150 90 L150 190"/><path d="M295.9 111.3 A50 50 0 1 0 295.9 168.7"/><circle cx="410" cy="140" r="50"/><path d="M510 190 L510 90 L600 190 L600 90"/></g></svg><svg class="nav-logo-wordmark" viewBox="7.5 -40 735 280" role="img" aria-label="ICON"><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2"><path d="M150 50 L150 150"/><path d="M295.9 71.3 A50 50 0 1 0 295.9 128.7"/><circle cx="410" cy="100" r="50"/><path d="M510 150 L510 50 L600 150 L600 50"/></g></svg></div>
   <div class="nav-links" id="navLinks">
     <a data-page="acasa" onclick="navTo('acasa')" class="active">Acasa</a>
     <a data-page="recenzii" onclick="navTo('recenzii')">Recenzii</a>
@@ -1795,6 +1828,9 @@ footer{
 
 <!-- Hero -->
 <section class="hero">
+  <div class="hero-fx" aria-hidden="true">
+    <canvas class="hero-fx-sparkles" id="heroSparkles"></canvas>
+  </div>
   <h1 class="hero-title">
     <span class="hero-title-big">ICON</span>
     <span class="hero-title-thin">BARBERSHOP</span>
@@ -1834,11 +1870,13 @@ footer{
   <div class="container" style="text-align:center;margin-bottom:32px">
     <p class="section-eyebrow">Echipa Icon</p>
     <h2 class="section-title">Alege expertul <em>tau.</em></h2>
-    <div style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:10px 20px;border:1px solid rgba(245,166,35,0.15);border-radius:var(--r-pill);background:rgba(245,166,35,0.04)">
-      <svg class="icon icon-md" style="color:var(--gold)"><use href="#i-map-pin"/></svg>
-      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.5)">2 locatii in Targu Mures</span>
-      <span style="width:3px;height:3px;border-radius:50%;background:rgba(245,166,35,0.4)"></span>
-      <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--gold);opacity:0.7">Alege locatia ta</span>
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:10px 20px;border:1px solid rgba(245,166,35,0.15);border-radius:var(--r-pill);background:rgba(245,166,35,0.04)">
+        <svg class="icon icon-md" style="color:var(--gold)"><use href="#i-map-pin"/></svg>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.5)">2 locatii in Targu Mures</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:rgba(245,166,35,0.4)"></span>
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--gold);opacity:0.7">Alege locatia ta</span>
+      </div>
     </div>
     <div class="echipa-loc-switch" id="echipaLocSwitch">
       <div class="echipa-loc-slider" id="echipaLocSlider"></div>
@@ -4109,12 +4147,12 @@ function switchTheme(theme) {
   var desc = document.getElementById('heroDesc');
   if (accent && desc) {
     if (theme === 'light') {
-      accent.textContent = 'Modern Barbering Concept.';
       desc.textContent = 'Lumina, spatiu si estetica contemporana. O noua perspectiva asupra stilului, chiar langa zona centrala.';
     } else {
-      accent.textContent = 'Premium Grooming Hub.';
       desc.textContent = 'Precizie in centrul universitar. Atmosfera sobra, servicii de elita. Experienta definita prin traditie si rigoare.';
     }
+    /* Rebuild + restart the animated accent for the active location */
+    renderHeroAccent(theme, HERO_ROTATOR_RESTART);
   }
   initTheme();
 }
@@ -4168,6 +4206,76 @@ function closeMenu(){ document.getElementById('mobileMenu').classList.remove('op
 function switchHeroLoc(btn, theme) {
   /* switchTheme now handles all syncing (hero text, toggles, loc-tabs) */
   switchTheme(theme);
+}
+
+/* ═══ HERO ANIMATED ACCENT ═══ */
+/* Two choreographed animations on the hero: the entrance (fadeUp, one-shot)
+   runs first; the word rotator (continuous loop) starts only once the accent's
+   entrance has finished, then cycles. On a location/theme toggle the word set
+   is rebuilt for the active location. */
+var HERO_ACCENTS = {
+  dark:  { prefix: 'Premium ', words: ['Grooming Hub.', 'Precision Cuts.', 'Elite Standard.', 'Barbering Legacy.', 'Craft & Detail.'] },
+  light: { prefix: 'Modern ',  words: ['Barbering Concept.', 'Design Studio.', 'Style Forward.', 'Clean Aesthetic.', 'Fresh Perspective.'] }
+};
+var HERO_ROTATOR_INTERVAL = 2600; /* ms between word swaps */
+var HERO_ROTATOR_RESTART  = 700;  /* ms to hold the first word after a toggle */
+var heroReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var heroRotatorTimer = null;
+
+function lockRotatorWidth(rot) {
+  var maxW = 0;
+  rot.querySelectorAll('.subtitle-word').forEach(function(s){ maxW = Math.max(maxW, s.offsetWidth); });
+  if (maxW) rot.style.width = maxW + 'px'; /* freeze width so the line never reflows mid-swap */
+}
+
+function renderHeroAccent(theme, firstDelay) {
+  var accent = document.getElementById('heroAccent');
+  if (!accent) return;
+  var cfg = HERO_ACCENTS[theme] || HERO_ACCENTS.dark;
+  if (heroRotatorTimer) { clearTimeout(heroRotatorTimer); heroRotatorTimer = null; }
+
+  accent.innerHTML = '';
+  var prefix = document.createElement('span');
+  prefix.className = 'hero-accent-static';
+  prefix.textContent = cfg.prefix;
+  var rot = document.createElement('span');
+  rot.className = 'subtitle-rotator';
+  cfg.words.forEach(function(w, i){
+    var s = document.createElement('span');
+    s.className = 'subtitle-word' + (i === 0 ? ' active' : '');
+    s.textContent = w;
+    rot.appendChild(s);
+  });
+  accent.appendChild(prefix);
+  accent.appendChild(rot);
+
+  lockRotatorWidth(rot);
+  /* re-measure once the italic serif web font is ready (metrics differ) */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ lockRotatorWidth(rot); });
+
+  if (heroReduceMotion) return; /* honor reduced motion: show the first word only */
+
+  var spans = rot.querySelectorAll('.subtitle-word');
+  var cur = 0;
+  function tick() {
+    var prev = cur;
+    spans[prev].classList.remove('active');
+    spans[prev].classList.add('above');                 /* current word slides up & out */
+    setTimeout(function(){ spans[prev].classList.remove('above'); }, 600); /* reset below, stays invisible */
+    cur = (cur + 1) % spans.length;
+    spans[cur].classList.add('active');                 /* next word slides up into view */
+  }
+  heroRotatorTimer = setTimeout(function loop(){ tick(); heroRotatorTimer = setTimeout(loop, HERO_ROTATOR_INTERVAL); }, firstDelay);
+}
+
+function initHeroAccent() {
+  var accent = document.getElementById('heroAccent');
+  if (!accent) return;
+  /* Begin cycling only after the accent's entrance animation finishes. */
+  var started = false;
+  function begin(){ if (started) return; started = true; renderHeroAccent(currentTheme, 900); }
+  accent.addEventListener('animationend', begin, { once: true });
+  setTimeout(begin, 1800); /* fallback if animationend never fires (e.g. hero off-screen) */
 }
 
 /* ═══ ECHIPA LOC SWITCH ═══ */
@@ -5058,10 +5166,169 @@ function apRecalc() {
   }
 }
 
+/* ═══ HERO BACKGROUND FX ═══
+   Drifting/twinkling sparkle field on <canvas>, in BOTH themes.
+   Only the particle colour + opacity adapt per theme:
+   - Dark  -> white sparkles, twinkle 0.1..1
+   - Light -> muted warm-bronze sparkles at reduced opacity, so they read as a
+              soft texture and don't clash with the bright gold buttons. */
+(function(){
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Sparkles ---- */
+  var canvas = document.getElementById('heroSparkles');
+  if(canvas){
+    var ctx = canvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio||1, 2);
+    var W=0, H=0, particles=[];
+
+    function makeParticle(){
+      var floaty  = Math.random() < 0.35;   /* light: subset that hovers (levity) */
+      var consume = Math.random() < 0.30;   /* light: spark that disappears vs pulses */
+      return {
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: 0.6 + Math.random()*0.9,          /* minSize 0.6 .. maxSize 1.5 */
+        vx: (Math.random()-0.5)*0.28,        /* dark: slow drift */
+        vy: (Math.random()-0.5)*0.28,
+        twPhase: Math.random()*Math.PI*2,
+        twSpeed: 0.4 + Math.random()*1.2,    /* dark: twinkle speed */
+        /* ── light-theme stars ── */
+        isStar: Math.random() < 0.42,        /* only a subset render (lower density) */
+        floaty: floaty,
+        consume: consume,
+        burstDur: consume ? 1.7 : 1.3,       /* shine burst length (s) — slower, smoother */
+        fall: floaty ? (0.12 + Math.random()*0.22)   /* hovering: very slow */
+                     : (0.30 + Math.random()*0.85),  /* falling: slowed down */
+        sway: Math.random()*Math.PI*2,       /* horizontal sway phase */
+        bob:  Math.random()*Math.PI*2,       /* vertical bob phase (levity) */
+        rot:  Math.random()*Math.PI*2,       /* current rotation angle */
+        spin: (Math.random()-0.5)*0.012,     /* slow spin, either direction */
+        starR: 2.0 + Math.random()*3.0,      /* star outer radius */
+        shineClock: Math.random()*6,         /* seconds until next spark (staggered) */
+        burstClock: 0                        /* seconds left in current spark */
+      };
+    }
+    function resize(){
+      var rect = canvas.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = Math.round(W*dpr);
+      canvas.height = Math.round(H*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      /* density ~ tsparticles particleDensity 100 over the hero area */
+      var target = Math.max(60, Math.min(220, Math.round((W*H)/9000)));
+      particles = [];
+      for(var i=0;i<target;i++) particles.push(makeParticle());
+    }
+
+    var last = performance.now();
+    function frame(now){
+      requestAnimationFrame(frame);
+      var dt = Math.min(50, now-last)/16.67; last = now;
+      ctx.clearRect(0,0,W,H);
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      var p, i;
+
+      if(isLight){
+        /* ── LIGHT THEME: a sparse field of little gold stars, drifting down
+              slowly (some hover for levity). Each WHITE-sparks on an interval:
+              'pulse' stars flash and stay; 'consume' stars flare and vanish. ── */
+        for(i=0;i<particles.length;i++){
+          p = particles[i];
+          if(!p.isStar) continue;                  /* (2) lower density */
+          var margin = p.starR*3;                  /* room for the flare-up scale */
+          var secDelta = dt/60;
+          if(!prefersReduced){
+            /* (3) slow drift; floaty stars hover with a vertical bob = levity */
+            if(p.floaty){
+              p.bob  += 0.025*dt;
+              p.y    += (p.fall + Math.sin(p.bob)*0.25)*dt;
+              p.sway += 0.018*dt;
+              p.x    += Math.sin(p.sway)*0.5*dt;
+            } else {
+              p.y    += p.fall*dt;
+              p.sway += 0.02*dt;
+              p.x    += Math.sin(p.sway)*0.18*dt;
+            }
+            p.rot += p.spin*dt;                     /* (2) gentle rotation */
+            /* (4) spark timing: pulse 3–6s, consume 5–10s */
+            if(p.burstClock > 0){
+              p.burstClock -= secDelta;
+              if(p.consume && p.burstClock <= 0){ p.y = -margin - Math.random()*60; p.x = Math.random()*W; p.rot = Math.random()*Math.PI*2; }
+            } else {
+              p.shineClock -= secDelta;
+              if(p.shineClock <= 0){ p.burstClock = p.burstDur; p.shineClock = p.consume ? (5 + Math.random()*5) : (3 + Math.random()*3); }
+            }
+          }
+          if(p.y - margin > H){ p.y = -margin - Math.random()*60; p.x = Math.random()*W; }
+          if(p.x < -6) p.x = W+6; else if(p.x > W+6) p.x = -6;
+          /* fade while travelling: ease in at top, out toward bottom */
+          var topF = p.y/(H*0.12);
+          var botF = (H - p.y)/(H*0.30);
+          var fade = Math.max(0, Math.min(1, topF, botF));
+          if(fade <= 0) continue;
+          /* (1) smooth spark: eased expand + brighten; consume dissolves smoothly */
+          var inten = 0, scale = 1, life = 1;
+          if(p.burstClock > 0){
+            var prog = 1 - p.burstClock/p.burstDur;            /* 0..1 */
+            inten = Math.sin(Math.PI*prog);                    /* whiten, peaks mid */
+            if(p.consume){
+              scale = 1 + 1.7*(1 - Math.pow(1-prog,3));        /* easeOutCubic grow */
+              life  = Math.cos(prog*Math.PI/2);                /* cosine fade 1→0 (smooth dissolve) */
+            } else {
+              scale = 1 + 0.5*inten;                           /* gentle pulse */
+            }
+          }
+          var R = p.starR * scale;
+          /* (1) smoother 4-point sparkle: concave curved edges, (2) rotated */
+          var ctrl = R*0.16;                                   /* pinch toward centre */
+          ctx.beginPath();
+          for(var k=0;k<4;k++){
+            var a  = p.rot + k*(Math.PI/2);
+            var na = p.rot + (k+1)*(Math.PI/2);
+            var ma = a + Math.PI/4;
+            var ox = p.x+Math.cos(a)*R,    oy = p.y+Math.sin(a)*R;
+            var cxp= p.x+Math.cos(ma)*ctrl,cyp= p.y+Math.sin(ma)*ctrl;
+            var nx = p.x+Math.cos(na)*R,   ny = p.y+Math.sin(na)*R;
+            if(k===0) ctx.moveTo(ox,oy);
+            ctx.quadraticCurveTo(cxp,cyp,nx,ny);
+          }
+          ctx.closePath();
+          /* gold base → WHITE at the spark peak */
+          ctx.fillStyle = 'rgb('+Math.round(245+10*inten)+','+Math.round(176+79*inten)+','+Math.round(55+200*inten)+')';
+          ctx.globalAlpha = fade * (0.45 + 0.55*inten) * life;
+          ctx.fill();                                 /* no trim — bare gold fill + white spark */
+        }
+      } else {
+        /* ── DARK THEME: drifting white twinkle starfield (unchanged) ── */
+        ctx.fillStyle = '#ffffff';
+        for(i=0;i<particles.length;i++){
+          p = particles[i];
+          if(!prefersReduced){
+            p.x += p.vx*dt; p.y += p.vy*dt;
+            p.twPhase += 0.04*p.twSpeed*dt;
+            if(p.x < -2) p.x = W+2; else if(p.x > W+2) p.x = -2;
+            if(p.y < -2) p.y = H+2; else if(p.y > H+2) p.y = -2;
+          }
+          var op = prefersReduced ? 0.7 : (0.1 + 0.9*(0.5+0.5*Math.sin(p.twPhase)));
+          ctx.globalAlpha = op;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(frame);
+  }
+})();
+
 /* ═══ INIT ═══ */
 renderBarbers();
 renderReviews();
 apRecalc();
+initHeroAccent();
 document.getElementById('navLogoImg').src='data:image/png;base64,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';
 switchRole('visitor');
 if (typeof scRender === 'function') scRender();
@@ -5077,6 +5344,50 @@ function handleHash() {
 }
 handleHash();
 window.addEventListener('hashchange', handleHash);
+</script>
+
+<!-- ═══ Icon backend bootstrap — completely inert in demo mode (blank ICON_CONFIG) ═══ -->
+<script>
+(function () {
+  if (!window.IconAPI || !IconAPI.ready()) return;   // demo mode: prototype stays 100% untouched
+
+  // Real session drives the UI role (replaces the demo role-pill).
+  IconAPI.onChange(function (role) { if (typeof switchRole === "function") switchRole(role); });
+
+  // Redeem a Telegram / email login link (?lt=…) then reflect the session.
+  IconAPI.handleLoginParam().then(function () {
+    if (IconAPI.role() !== "visitor" && typeof switchRole === "function") switchRole(IconAPI.role());
+  }).catch(function (e) { console.warn("[icon] login param:", e); });
+
+  // OPTIONAL public hydration — only when ICON_CONFIG.hydratePublic === true.
+  if (window.ICON_CONFIG && ICON_CONFIG.hydratePublic) {
+    window.addEventListener("load", function () {
+      try {
+        if (typeof renderBarbers === "function" && typeof CONFIG === "object") {
+          IconAPI.getPublicCatalog().then(function (d) {
+            if (!d || !d.barbers || !d.barbers.length) return;
+            CONFIG.barbers = d.barbers.map(function (b) {
+              return {
+                id: b.id, name: b.name, role: b.role || "Barber",
+                initial: (b.name || "").split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase(),
+                wa: (b.whatsapp_phone || "").replace(/\D/g, ""),
+                tg: ICON_CONFIG.botUsername || "iconbarbershop",
+                location: b.location_id,
+                services: (d.services || []).map(function (s) { return { name: s.name, price: s.price_ron + " RON" }; })
+              };
+            });
+            var dc = document.getElementById("barbersDark"), lc = document.getElementById("barbersLight");
+            if (dc) dc.innerHTML = ""; if (lc) lc.innerHTML = "";
+            renderBarbers();
+          }).catch(function (e) { console.warn("[icon] catalog:", e); });
+        }
+        IconAPI.getPublicSettings().then(function (s) {
+          if (s && typeof s.show_loyalty_on_cards !== "undefined") window.adminShowLoyalty = !!s.show_loyalty_on_cards;
+        }).catch(function () {});
+      } catch (e) { console.warn("[icon] hydrate:", e); }
+    });
+  }
+})();
 </script>
 </body>
 </html>
